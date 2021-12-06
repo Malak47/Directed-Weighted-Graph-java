@@ -2,6 +2,7 @@ package api.Implementation;
 
 import api.api.EdgeData;
 
+
 public class Edge implements EdgeData {
     private int src;
     private int dest;
@@ -9,10 +10,13 @@ public class Edge implements EdgeData {
     private String info;
     private int tag;
 
+
     public Edge(int src, int dest, double weight) {
         this.src = src;
         this.dest = dest;
         this.weight = weight;
+        this.info = "Unknown";
+        this.tag = 0;
     }
 
     @Override

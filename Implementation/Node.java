@@ -3,17 +3,24 @@ package api.Implementation;
 import api.api.GeoLocation;
 import api.api.NodeData;
 
+import java.util.HashMap;
+
 public class Node implements NodeData {
     private Integer key;
     private GeoL location;
     private double weight;
     private String info;
     private int tag;
+    private HashMap<Integer, Edge> edges;
 
 
     public Node(GeoL location, int key) {
         this.location = location;
         this.key = key;
+        this.weight = 0;
+        this.info = "Unknown";
+        this.tag = 0;
+        this.edges = new HashMap<Integer, Edge>();
     }
 
     @Override
@@ -64,5 +71,10 @@ public class Node implements NodeData {
     @Override
     public String toString() {
         return "pos: " + this.location + "\nid:" + this.key;
+    }
+
+    public void addEdge(int dest, double weight) {
+        Edge edge = new Edge(this.key, dest, weight);
+        this.edges.put(dest, edge);
     }
 }

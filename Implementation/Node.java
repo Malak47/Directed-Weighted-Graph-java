@@ -4,12 +4,17 @@ import api.api.GeoLocation;
 import api.api.NodeData;
 
 public class Node implements NodeData {
-    Integer key;
-    GeoLocation location;
-    double weight;
-    String info;
-    int tag;
+    private Integer key;
+    private GeoL location;
+    private double weight;
+    private String info;
+    private int tag;
 
+
+    public Node(GeoL location, int key) {
+        this.location = location;
+        this.key = key;
+    }
 
     @Override
     public int getKey() {
@@ -23,7 +28,7 @@ public class Node implements NodeData {
 
     @Override
     public void setLocation(GeoLocation p) {
-        this.location = p;
+        this.location = (GeoL) p;
     }
 
     @Override
@@ -54,5 +59,10 @@ public class Node implements NodeData {
     @Override
     public void setTag(int t) {
         this.tag = t;
+    }
+
+    @Override
+    public String toString() {
+        return "pos: " + this.location + "\nid:" + this.key;
     }
 }

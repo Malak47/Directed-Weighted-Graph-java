@@ -3,9 +3,9 @@ package api.Implementation;
 import api.api.GeoLocation;
 
 public class GeoL implements GeoLocation {
-    double _x;
-    double _y;
-    double _z;
+    private double _x;
+    private double _y;
+    private double _z;
 
     public GeoL(double x, double y, double z){
         this._x = x;
@@ -14,17 +14,17 @@ public class GeoL implements GeoLocation {
     }
     @Override
     public double x() {
-        return _x;
+        return this._x;
     }
 
     @Override
     public double y() {
-        return _y;
+        return this._y;
     }
 
     @Override
     public double z() {
-        return _z;
+        return this._z;
     }
 
     @Override

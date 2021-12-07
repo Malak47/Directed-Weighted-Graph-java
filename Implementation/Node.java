@@ -11,7 +11,8 @@ public class Node implements NodeData {
     private double weight;
     private String info;
     private int tag;
-    private HashMap<Integer, Edge> edges;
+    private HashMap<Integer, Edge> edgesIn;
+    private HashMap<Integer, Edge> edgesOut;
 
 
     public Node(GeoL location, int key) {
@@ -20,7 +21,8 @@ public class Node implements NodeData {
         this.weight = 0;
         this.info = "Unknown";
         this.tag = 0;
-        this.edges = new HashMap<Integer, Edge>();
+        this.edgesIn = new HashMap<Integer, Edge>();
+        this.edgesOut = new HashMap<Integer, Edge>();
     }
 
     @Override
@@ -75,10 +77,23 @@ public class Node implements NodeData {
 
     public void addEdge(int dest, double weight) {
         Edge edge = new Edge(this.key, dest, weight);
-        this.edges.put(dest, edge);
+        this.edgesIn.put(dest, edge);
     }
 
-    public Edge getEdge(int dest){
-        return this.edges.get(dest);
+    public void addEdgeOut(int src, double weight) {
+        Edge edge = new Edge(src, this.key, weight);
+        this.edgesOut.put(src, edge);
+    }
+
+    public Edge getEdge(int dest) {
+        return this.edgesIn.get(dest);
+    }
+
+    public HashMap<Integer, Edge> getAllEdgesIn() {
+        return this.edgesIn;
+    }
+
+    public HashMap<Integer, Edge> getAllEdgesOut() {
+        return this.edgesOut;
     }
 }

@@ -77,4 +77,8 @@ public class Node implements NodeData {
         Edge edge = new Edge(this.key, dest, weight);
         this.edges.put(dest, edge);
     }
+
+    public Edge getEdge(int dest){
+        return this.edges.get(dest);
+    }
 }

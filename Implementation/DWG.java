@@ -4,33 +4,39 @@ import api.api.DirectedWeightedGraph;
 import api.api.EdgeData;
 import api.api.NodeData;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class DWG implements DirectedWeightedGraph {
 
+    HashMap<Integer, Node> nodes = new HashMap<Integer,Node>();
+
     @Override
     public NodeData getNode(int key) {
-        return null;
+        return this.nodes.get(key);
     }
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-        return null;
+        Edge edge = this.nodes.get(src).getEdge(dest);
+        return edge;
     }
 
     @Override
     public void addNode(NodeData n) {
-
+        Node node = new Node((GeoL) n.getLocation(),n.getKey());
+        this.nodes.put(n.getKey(),node);
     }
 
     @Override
     public void connect(int src, int dest, double w) {
-
+        Edge edge = new Edge(src,dest,w);
+        this.nodes.get(src).addEdge(dest,w);
     }
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        return null;
+        return (Iterator<NodeData>) this.nodes.values();
     }
 
     @Override

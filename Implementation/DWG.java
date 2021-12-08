@@ -11,8 +11,8 @@ import java.util.Map;
 public class DWG implements DirectedWeightedGraph {
 
     private int MC = 0;
-    HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
-    HashMap<String, Edge> edges = new HashMap<String, Edge>();
+    private HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
+    private HashMap<String, Edge> edges = new HashMap<String, Edge>();
 
     @Override
     public NodeData getNode(int key) {

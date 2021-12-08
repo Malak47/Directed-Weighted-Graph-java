@@ -21,7 +21,7 @@ public class DWG implements DirectedWeightedGraph {
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-        Edge edge = this.nodes.get(src).getEdge(dest);
+        Edge edge = this.nodes.get(src).getEdgeIn(dest);
         return edge;
     }
 
@@ -35,7 +35,7 @@ public class DWG implements DirectedWeightedGraph {
     @Override
     public void connect(int src, int dest, double w) {
         Edge edge = new Edge(src, dest, w);
-        this.nodes.get(src).addEdge(dest, w);
+        this.nodes.get(src).addEdgeIn(dest, w);
         this.nodes.get(dest).addEdgeOut(src, w);
         edges.put(edge.toString(), edge);
         ++this.MC;

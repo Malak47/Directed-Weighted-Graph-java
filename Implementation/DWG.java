@@ -14,6 +14,12 @@ public class DWG implements DirectedWeightedGraph {
     private HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
     private HashMap<String, Edge> edges = new HashMap<String, Edge>();
 
+    public DWG() {
+        this.MC = 0;
+        this.nodes = new HashMap<Integer, Node>();
+        this.edges = new HashMap<String, Edge>();
+    }
+
     @Override
     public NodeData getNode(int key) {
         return this.nodes.get(key);
@@ -21,7 +27,7 @@ public class DWG implements DirectedWeightedGraph {
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-        Edge edge = this.nodes.get(src).getEdgeIn(dest);
+        Edge edge = this.nodes.get(src).getEdgeOut(dest);
         return edge;
     }
 
@@ -35,25 +41,32 @@ public class DWG implements DirectedWeightedGraph {
     @Override
     public void connect(int src, int dest, double w) {
         Edge edge = new Edge(src, dest, w);
-        this.nodes.get(src).addEdgeIn(dest, w);
-        this.nodes.get(dest).addEdgeOut(src, w);
+        this.nodes.get(src).addEdgeOut(dest, w);
+        this.nodes.get(dest).addEdgeIn(src, w);
         edges.put(edge.toString(), edge);
         ++this.MC;
     }
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        return (Iterator<NodeData>) this.nodes.values();
+        HashMap<Integer, NodeData> hashNode = (HashMap<Integer, NodeData>) this.nodes.clone();
+        Iterator<NodeData> iterNode = hashNode.values().iterator();
+        return iterNode;
     }
 
     @Override
     public Iterator<EdgeData> edgeIter() {
-        return (Iterator<EdgeData>) edges.values();
+        HashMap<String, EdgeData> hashEdge = (HashMap<String, EdgeData>) this.edges.clone();
+        Iterator<EdgeData> iterEdge = hashEdge.values().iterator();
+        return iterEdge;
     }
 
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
-        return (Iterator<EdgeData>) this.nodes.get(node_id).getAllEdgesIn().values();
+        HashMap<String, EdgeData> hashEdge = (HashMap<String, EdgeData>) this.nodes.get(node_id).getAllEdgesOut().clone();
+        Iterator<EdgeData> iterEdge = hashEdge.values().iterator();
+        return iterEdge;
+
     }
 
     @Override
@@ -93,5 +106,13 @@ public class DWG implements DirectedWeightedGraph {
     @Override
     public int getMC() {
         return this.MC;
+    }
+
+    public HashMap<Integer, Node> getNodes() {
+        return this.nodes;
+    }
+
+    public HashMap<String, Edge> getEdges() {
+        return this.edges;
     }
 }

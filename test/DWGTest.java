@@ -164,4 +164,26 @@ class DWGTest {
         dwg2.removeNode(n3.getKey());
         assertEquals(5, dwg2.getMC());
     }
+
+    @org.junit.jupiter.api.Test
+    void getNodes() {
+        dwg.addNode(n1);
+        dwg.addNode(n2);
+        dwg.addNode(n3);
+        assertEquals(dwg.getNodes().get(n1.getKey()).getKey(), n1.getKey());
+        assertEquals(dwg.getNodes().get(n2.getKey()).getKey(), n2.getKey());
+        assertEquals(dwg.getNodes().get(n3.getKey()).getKey(), n3.getKey());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getEdges() {
+        dwg.addNode(n1);
+        dwg.addNode(n2);
+        dwg.addNode(n3);
+        dwg.connect(n1.getKey(), n2.getKey(), 2);
+        dwg.connect(n2.getKey(), n3.getKey(), 3);
+        assertEquals(dwg.getEdges().get(e1.toString()).getSrc(), e1.getSrc());
+        assertEquals(dwg.getEdges().get(e2.toString()).getSrc(), e2.getSrc());
+    }
+
 }

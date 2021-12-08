@@ -72,21 +72,25 @@ public class Node implements NodeData {
 
     @Override
     public String toString() {
-        return "pos: " + this.location + "\nid:" + this.key;
+        return "pos: " + this.location + "\nid: " + this.key;
     }
 
-    public void addEdge(int dest, double weight) {
+    public void addEdgeOut(int dest, double weight) {
         Edge edge = new Edge(this.key, dest, weight);
-        this.edgesIn.put(dest, edge);
+        this.edgesOut.put(dest, edge);
     }
 
-    public void addEdgeOut(int src, double weight) {
+    public void addEdgeIn(int src, double weight) {
         Edge edge = new Edge(src, this.key, weight);
-        this.edgesOut.put(src, edge);
+        this.edgesIn.put(src, edge);
     }
 
-    public Edge getEdge(int dest) {
+    public Edge getEdgeIn(int dest) {
         return this.edgesIn.get(dest);
+    }
+
+    public Edge getEdgeOut(int src) {
+        return this.edgesOut.get(src);
     }
 
     public HashMap<Integer, Edge> getAllEdgesIn() {

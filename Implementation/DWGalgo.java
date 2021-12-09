@@ -5,10 +5,7 @@ import api.api.DirectedWeightedGraphAlgorithms;
 import api.api.EdgeData;
 import api.api.NodeData;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     private DWG dwg;
@@ -19,6 +16,24 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     public DWGalgo(DWG dwg) {
         this.dwg = dwg;
+    }
+
+    public static void DFSout(DWG dwg, int nodeKey, boolean[] visited) {
+        visited[nodeKey] = true;
+        for (Map.Entry<Integer, Edge> meEdge : ((Node) dwg.getNode(nodeKey)).getAllEdgesOut().entrySet()) {
+            if (!visited[meEdge.getKey()]) {
+                DFSout(dwg, meEdge.getKey(), visited);
+            }
+        }
+    }
+
+    public static void DFSin(DWG dwg, int nodeKey, boolean[] visited) {
+        visited[nodeKey] = true;
+        for (Map.Entry<Integer, Edge> meEdge : ((Node) dwg.getNode(nodeKey)).getAllEdgesIn().entrySet()) {
+            if (!visited[meEdge.getKey()]) {
+                DFSin(dwg, meEdge.getKey(), visited);
+            }
+        }
     }
 
     //    public DWGalgo(String jsonFile){
@@ -54,7 +69,17 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public boolean isConnected() {
-        return false;
+        int size = this.dwg.getNodes().size();
+        boolean[] visited = new boolean[size];
+        Map.Entry<Integer, Node> meNode = this.dwg.getNodes().entrySet().iterator().next();
+        Integer key = meNode.getKey();
+        Node value = meNode.getValue();
+
+        DFSout(dwg, key, visited);
+        for (int i = 0; i < size; i++) {
+            if (!visited[i]) return false;
+        }
+        return true;
     }
 
     @Override
@@ -87,3 +112,4 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         return false;
     }
 }
+

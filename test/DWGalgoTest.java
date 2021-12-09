@@ -46,6 +46,26 @@ class DWGalgoTest {
 
     @Test
     void isConnected() {
+        DWG dwg = new DWG();
+        dwg.addNode(n0);
+        dwg.addNode(n1);
+        dwg.addNode(n2);
+        dwg.connect(n0.getKey(),n1.getKey(),2);
+        dwg.connect(n1.getKey(),n2.getKey(),3);
+        DWGalgo dwgalgo = new DWGalgo(dwg);
+        boolean ans = dwgalgo.isConnected();
+        assertTrue(ans);
+
+        DWG dwg2 = new DWG();
+        dwg2.addNode(n0);
+        dwg2.addNode(n1);
+        dwg2.addNode(n2);
+        dwg2.connect(n0.getKey(),n1.getKey(),2);
+        //dwg2.connect(n1.getKey(),n2.getKey(),3);
+        DWGalgo dwgalgo2 = new DWGalgo(dwg2);
+        boolean ans2 = dwgalgo2.isConnected();
+        assertFalse(ans2);
+
     }
 
     @Test

@@ -167,6 +167,22 @@ class DWGalgoTest {
 
     @Test
     void center() {
+        DWG dwg = new DWG();
+        dwg.addNode(n0);
+        dwg.addNode(n1);
+        dwg.addNode(n2);
+       // dwg.addNode(n3);
+        dwg.connect(n0.getKey(),n1.getKey(),1);
+        dwg.connect(n1.getKey(),n0.getKey(),1);
+        dwg.connect(n1.getKey(),n2.getKey(),1);
+        dwg.connect(n2.getKey(),n1.getKey(),1);
+       // dwg.connect(n3.getKey(),n2.getKey(),1);
+        //dwg.connect(n0.getKey(),n2.getKey(),1);
+
+ /*       dwg.connect(n1.getKey(),n2.getKey(),1);
+        dwg.connect(n2.getKey(),n3.getKey(),1);*/
+        DWGalgo dwgalgo = new DWGalgo(dwg);
+        assertEquals(1,dwgalgo.center().getKey());
     }
 
     @Test

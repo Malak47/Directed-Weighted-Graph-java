@@ -355,4 +355,30 @@ class NodeTest {
         assertEquals(n2.getAllEdgesOut().get(n1.getKey()).getInfo(), e1.getInfo());
         assertEquals(n2.getAllEdgesOut().get(n1.getKey()).getWeight(), e1.getWeight());
     }
+
+    @Test
+    void getPrevious(){
+        n0.setPrevious(n1);
+        n1.setPrevious(n2);
+        n2.setPrevious(n3);
+        n3.setPrevious(n4);
+
+        assertEquals(n0.getPrevious().getKey(),n1.getKey());
+        assertEquals(n1.getPrevious().getKey(),n2.getKey());
+        assertEquals(n2.getPrevious().getKey(),n3.getKey());
+        assertEquals(n3.getPrevious().getKey(),n4.getKey());
+    }
+
+    @Test
+    void setPrevious(){
+        n0.setPrevious(n1);
+        n1.setPrevious(n2);
+        n2.setPrevious(n3);
+        n3.setPrevious(n4);
+
+        assertEquals(n0.getPrevious().getKey(),n1.getKey());
+        assertEquals(n1.getPrevious().getKey(),n2.getKey());
+        assertEquals(n2.getPrevious().getKey(),n3.getKey());
+        assertEquals(n3.getPrevious().getKey(),n4.getKey());
+    }
 }

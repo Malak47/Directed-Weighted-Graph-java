@@ -73,23 +73,50 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         boolean[] visited = new boolean[size];
         Map.Entry<Integer, Node> meNode = this.dwg.getNodes().entrySet().iterator().next();
         Integer key = meNode.getKey();
-        Node value = meNode.getValue();
-
         DFSout(dwg, key, visited);
+
         for (int i = 0; i < size; i++) {
             if (!visited[i]) return false;
         }
+//        Arrays.fill(visited,false);
+//        DFSin(dwg, size-1, visited);
+//        for (int i = 0; i < size; i++) {
+//            if (!visited[i]) return false;
+//        }
         return true;
     }
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        return 0;
+        List<NodeData> shortestPath = shortestPath(src, dest);
+        if (shortestPath == null) {
+            return -1;
+        }
+        double shortPath = 0;
+        for (int i = 0; i < shortestPath.size() - 1; i++) {
+            shortPath += this.dwg.getEdge(shortestPath.get(i).getKey(), shortestPath.get(i + 1).getKey()).getWeight();
+        }
+        return shortPath;
     }
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        return null;
+        List<NodeData> shortestPath = new ArrayList<NodeData>();
+        Dijkstra(src);
+
+        for (Node node = (Node) this.dwg.getNode(dest); node != null; node = node.getPrevious()) {
+            shortestPath.add(node);
+        }
+
+        Collections.reverse(shortestPath);
+        if (shortestPath.size() == 1) {
+            return null;
+        }
+        return shortestPath;
+//        for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
+//            shortestPath.add(meNode.getValue());
+//            if(meNode.getKey()==dest)
+//        }
     }
 
     @Override
@@ -110,6 +137,36 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     @Override
     public boolean load(String file) {
         return false;
+    }
+
+    public void Dijkstra(int src) {
+
+        Node node = this.dwg.getNodes().get(src);
+        double saveWeight = node.getWeight();
+        node.setWeight(0.0);
+        PriorityQueue<Node> NodeQueue = new PriorityQueue<>(Comparator.comparing(Node::getWeight));
+        NodeQueue.add(node);
+
+        while (!NodeQueue.isEmpty()) {
+            Node currNode = NodeQueue.poll();
+
+            for (Map.Entry<Integer, Edge> meEdge : currNode.getAllEdgesOut().entrySet()) {
+                Node childNode = (Node) this.dwg.getNode(meEdge.getValue().getDest());
+                if (childNode.getKey() != src && childNode.getTag() != Integer.MAX_VALUE) {
+                    //childNode.getWeight() == 0
+                    childNode.setWeight(Double.POSITIVE_INFINITY);
+                }
+                double weight = meEdge.getValue().getWeight();
+                double dist = currNode.getWeight() + weight;
+                if (dist < childNode.getWeight()) {
+                    NodeQueue.remove(childNode);
+                    childNode.setWeight(dist);
+                    childNode.setTag(Integer.MAX_VALUE);
+                    childNode.setPrevious(currNode);
+                    NodeQueue.add(childNode);
+                }
+            }
+        }
     }
 }
 

@@ -13,6 +13,7 @@ public class Node implements NodeData {
     private int tag;
     private HashMap<Integer, Edge> edgesIn;
     private HashMap<Integer, Edge> edgesOut;
+    private Node previous;
 
 
     public Node(GeoL location, int key) {
@@ -23,6 +24,7 @@ public class Node implements NodeData {
         this.tag = 0;
         this.edgesIn = new HashMap<Integer, Edge>();
         this.edgesOut = new HashMap<Integer, Edge>();
+        this.previous = null;
     }
 
     @Override
@@ -100,4 +102,13 @@ public class Node implements NodeData {
     public HashMap<Integer, Edge> getAllEdgesOut() {
         return this.edgesOut;
     }
+
+    public Node getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Node previous) {
+        this.previous = previous;
+    }
+
 }

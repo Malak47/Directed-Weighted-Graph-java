@@ -191,7 +191,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             }
             for (JsonElement edge : Edges) {
                 JsonObject Edge = (JsonObject) edge;
-                dwg.connect(Edge.get("src").getAsInt(), Edge.get("dest").getAsInt(), Edge.get("w").getAsInt());
+                dwg.connect(Edge.get("src").getAsInt(), Edge.get("dest").getAsInt(), Edge.get("w").getAsDouble());
             }
             this.dwg = dwg;
         } catch (FileNotFoundException e) {

@@ -112,6 +112,9 @@ public class DWG implements DirectedWeightedGraph {
         return this.nodes;
     }
 
+    public void addEdge(EdgeData edge) {
+        connect(edge.getSrc(),edge.getDest(),edge.getWeight());
+    }
     public HashMap<String, Edge> getEdges() {
         return this.edges;
     }

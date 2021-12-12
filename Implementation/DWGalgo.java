@@ -10,10 +10,6 @@ import java.util.*;
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     private DWG dwg;
 
-    public DWGalgo(GeoL g) {
-
-    }
-
     public DWGalgo(DWG dwg) {
         this.dwg = dwg;
     }
@@ -36,11 +32,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         }
     }
 
-    //    public DWGalgo(String jsonFile){
-//        try{
-//
-//        }
-//    }
     @Override
     public void init(DirectedWeightedGraph g) {
         this.dwg = (DWG) g;
@@ -78,11 +69,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         for (int i = 0; i < size; i++) {
             if (!visited[i]) return false;
         }
-//        Arrays.fill(visited,false);
-//        DFSin(dwg, size-1, visited);
-//        for (int i = 0; i < size; i++) {
-//            if (!visited[i]) return false;
-//        }
         return true;
     }
 
@@ -103,15 +89,23 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     public List<NodeData> shortestPath(int src, int dest) {
         List<NodeData> shortestPath = new ArrayList<NodeData>();
         Dijkstra(src);
-
-        for (Node node = (Node) this.dwg.getNode(dest); node != null; node = node.getPrevious()) {
-            shortestPath.add(node);
+        int counter = 0;
+        for (Node node = (Node) this.dwg.getNode(dest); node != ((Node) this.dwg.getNode(src)); node = node.getPrevious()) {
+            if (!shortestPath.contains(node)) {
+                shortestPath.add(node);
+            }
+            counter++;
+            if (counter == this.dwg.nodeSize()) {
+                break;
+            }
         }
+        shortestPath.add((Node) this.dwg.getNode(src));
 
         Collections.reverse(shortestPath);
         if (shortestPath.size() == 1) {
             return null;
         }
+
         return shortestPath;
 //        for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
 //            shortestPath.add(meNode.getValue());
@@ -121,21 +115,21 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public NodeData center() {
-        if(!isConnected())
+        if (!isConnected())
             return null;
         Node centerNode = null;
         double minimum = Integer.MAX_VALUE;
-        for(Iterator<NodeData> iterNode1 = this.dwg.nodeIter(); iterNode1.hasNext();){
+        for (Iterator<NodeData> iterNode1 = this.dwg.nodeIter(); iterNode1.hasNext(); ) {
             NodeData node = iterNode1.next();
             double maximum = Double.MIN_VALUE;
-            for(Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext();){
+            for (Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext(); ) {
                 NodeData temp = iterNode2.next();
-                Double shortestpath = shortestPathDist(node.getKey(),temp.getKey());
-                if(shortestpath > maximum){
+                Double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
+                if (shortestpath > maximum) {
                     maximum = shortestpath;
                 }
             }
-            if(maximum < minimum){
+            if (maximum < minimum) {
                 minimum = maximum;
                 centerNode = (Node) node;
             }

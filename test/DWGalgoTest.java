@@ -388,64 +388,12 @@ class DWGalgoTest {
 
     @Test
     void center() {
-        DWG dwgtest = new DWG();
-        dwgtest.addNode(n0 );
-        dwgtest.addNode(n1 );
-        dwgtest.addNode(n2 );
-        dwgtest.addNode(n3 );
-        dwgtest.addNode(n4 );
-        dwgtest.addNode(n5 );
-        dwgtest.addNode(n6 );
-        dwgtest.addNode(n7 );
-        dwgtest.addNode(n8 );
-        dwgtest.addNode(n9 );
-        dwgtest.addNode(n10);
-        dwgtest.addNode(n11);
-        dwgtest.addNode(n12);
-        dwgtest.addNode(n13);
-        dwgtest.addNode(n14);
-        dwgtest.addNode(n15);
-        dwgtest.addNode(n16);
-
-        dwgtest.addEdge(e0 );
-        dwgtest.addEdge(e1 );
-        dwgtest.addEdge(e2 );
-        dwgtest.addEdge(e3 );
-        dwgtest.addEdge(e4 );
-        dwgtest.addEdge(e5 );
-        dwgtest.addEdge(e6 );
-        dwgtest.addEdge(e7 );
-        dwgtest.addEdge(e8 );
-        dwgtest.addEdge(e9 );
-        dwgtest.addEdge(e10);
-        dwgtest.addEdge(e11);
-        dwgtest.addEdge(e12);
-        dwgtest.addEdge(e13);
-        dwgtest.addEdge(e14);
-        dwgtest.addEdge(e15);
-        dwgtest.addEdge(e16);
-        dwgtest.addEdge(e17);
-        dwgtest.addEdge(e18);
-        dwgtest.addEdge(e19);
-        dwgtest.addEdge(e20);
-        dwgtest.addEdge(e21);
-        dwgtest.addEdge(e22);
-        dwgtest.addEdge(e23);
-        dwgtest.addEdge(e24);
-        dwgtest.addEdge(e25);
-        dwgtest.addEdge(e26);
-        dwgtest.addEdge(e27);
-        dwgtest.addEdge(e28);
-        dwgtest.addEdge(e29);
-        dwgtest.addEdge(e30);
-        dwgtest.addEdge(e31);
-        dwgtest.addEdge(e32);
-        dwgtest.addEdge(e33);
-        dwgtest.addEdge(e34);
-        dwgtest.addEdge(e35);
-        //DWGalgo dwgalgotest = new DWGalgo("G1.json");
-        assertEquals(dwgalgotest.center().getKey(), 8);
-
+        DWGalgo a = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
+        assertEquals(a.center().getKey(),8);
+        DWGalgo b = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G2.json");
+        assertEquals(b.center().getKey(),0);
+        DWGalgo c = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G3.json");
+        assertEquals(c.center().getKey(),40);
 
       ///////////////////////////////////////////////////////////////////////
 //        assertEquals(a.center().getKey(), 8);
@@ -496,5 +444,7 @@ class DWGalgoTest {
 
     @Test
     void load() {
+        DWGalgo dwgalgo = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
+        assertEquals(((DWG)dwgalgo.getGraph()).getNode(0).getWeight(),0.0);
     }
 }

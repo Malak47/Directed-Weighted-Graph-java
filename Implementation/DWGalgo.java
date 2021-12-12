@@ -3,24 +3,16 @@ package api.Implementation;
 import api.api.DirectedWeightedGraph;
 import api.api.DirectedWeightedGraphAlgorithms;
 import api.api.NodeData;
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     private DWG dwg;
+    private DWG DWGcopy;
 
     public DWGalgo(DWG dwg) {
         this.dwg = dwg;
-    }
-
-    public DWGalgo(String jsonFileName){
-        this.load(jsonFileName);
+        this.DWGcopy = (DWG) this.copy();
     }
 
     public static void DFSout(DWG dwg, int nodeKey, boolean[] visited) {
@@ -41,11 +33,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         }
     }
 
-    //    public DWGalgo(String jsonFile){
-//        try{
-//
-//        }
-//    }
     @Override
     public void init(DirectedWeightedGraph g) {
         this.dwg = (DWG) g;
@@ -58,15 +45,23 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public DirectedWeightedGraph copy() {
+
         DWG dwgCopy = new DWG();
         for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
-            Node node = new Node((GeoL) meNode.getValue().getLocation(), meNode.getKey());
+            GeoL geol = new GeoL(meNode.getValue().getLocation().x(), meNode.getValue().getLocation().y(), meNode.getValue().getLocation().z());
+            Node node = new Node(geol, meNode.getKey());
             dwgCopy.addNode(node);
         }
         for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
-            HashMap<Integer, Edge> hashEdges = meNode.getValue().getAllEdgesOut();
-            for (Map.Entry<Integer, Edge> meEdgesOut : hashEdges.entrySet()) {
-                dwgCopy.connect(dwgCopy.getNode(meNode.getKey()).getKey(), meEdgesOut.getValue().getDest(), meEdgesOut.getValue().getWeight());
+            HashMap<Integer, Edge> hashEdgesOut = meNode.getValue().getAllEdgesOut();
+            for (Map.Entry<Integer, Edge> meEdgesOut : hashEdgesOut.entrySet()) {
+                Edge edge = new Edge(meEdgesOut.getValue().getSrc(), meEdgesOut.getValue().getDest(), meEdgesOut.getValue().getWeight());
+                dwgCopy.addEdge(edge);
+            }
+            HashMap<Integer, Edge> hashEdgesIn = meNode.getValue().getAllEdgesIn();
+            for (Map.Entry<Integer, Edge> meEdgesIn : hashEdgesIn.entrySet()) {
+                Edge edge = new Edge(meEdgesIn.getValue().getSrc(), meEdgesIn.getValue().getDest(), meEdgesIn.getValue().getWeight());
+                dwgCopy.addEdge(edge);
             }
         }
         return dwgCopy;
@@ -83,11 +78,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         for (int i = 0; i < size; i++) {
             if (!visited[i]) return false;
         }
-//        Arrays.fill(visited,false);
-//        DFSin(dwg, size-1, visited);
-//        for (int i = 0; i < size; i++) {
-//            if (!visited[i]) return false;
-//        }
         return true;
     }
 
@@ -99,7 +89,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         }
         double shortPath = 0;
         for (int i = 0; i < shortestPath.size() - 1; i++) {
-            shortPath += this.dwg.getEdge(shortestPath.get(i).getKey(), shortestPath.get(i + 1).getKey()).getWeight();
+            shortPath += DWGcopy.getEdge(shortestPath.get(i).getKey(), shortestPath.get(i + 1).getKey()).getWeight();
         }
         return shortPath;
     }
@@ -108,19 +98,24 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     public List<NodeData> shortestPath(int src, int dest) {
         List<NodeData> shortestPath = new ArrayList<NodeData>();
         Dijkstra(src);
-
-        for (Node node = (Node) this.dwg.getNode(dest); node != null; node = node.getPrevious()) {
-            System.out.println(src + "-"+node.getKey()+"-"+dest);
-            if(!shortestPath.contains(node))
+        int counter = 0;
+        for (Node node = (Node) DWGcopy.getNode(dest); node != ((Node) DWGcopy.getNode(src)); node = node.getPrevious()) {
+            if (!shortestPath.contains(node)) {
                 shortestPath.add(node);
-            if(node.getKey() == src)
+            }
+            counter++;
+            if (counter == DWGcopy.nodeSize()) {
                 break;
+            }
         }
-        System.out.println(" "+shortestPath.size());
+        shortestPath.add((Node) DWGcopy.getNode(src));
+
         Collections.reverse(shortestPath);
+        this.DWGcopy = this.dwg;
         if (shortestPath.size() == 1) {
             return null;
         }
+
         return shortestPath;
 //        for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
 //            shortestPath.add(meNode.getValue());
@@ -130,24 +125,26 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public NodeData center() {
-        if(!isConnected())
+        if (!isConnected())
             return null;
         Node centerNode = null;
         double minimum = Integer.MAX_VALUE;
-        for(Iterator<NodeData> iterNode1 = this.dwg.nodeIter(); iterNode1.hasNext();){
+        for (Iterator<NodeData> iterNode1 = this.dwg.nodeIter(); iterNode1.hasNext(); ) {
             NodeData node = iterNode1.next();
             double maximum = Double.MIN_VALUE;
-            Dijkstra(node.getKey());
-            for(Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext();){
+
+            for (Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext(); ) {
                 NodeData temp = iterNode2.next();
-                if(temp.getKey() != node.getKey()) {
+                if (temp.getKey() != node.getKey()) {
                     Double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
                     if (shortestpath > maximum) {
                         maximum = shortestpath;
                     }
                 }
+                this.DWGcopy = (DWG) this.copy();
+
             }
-            if(maximum < minimum){
+            if (maximum < minimum) {
                 minimum = maximum;
                 centerNode = (Node) node;
             }
@@ -162,47 +159,17 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public boolean save(String file) {
-        try{
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter fileWriter = new FileWriter(file);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
         return false;
     }
 
     @Override
     public boolean load(String file) {
-        try{
-            DWG dwg = new DWG();
-            FileReader fileReader = new FileReader(file);
-            JsonReader jsonReader = new JsonReader(fileReader);
-            JsonObject jsonObject = new JsonParser().parse(jsonReader).getAsJsonObject();
-            JsonArray Nodes = jsonObject.getAsJsonArray("Nodes");
-            JsonArray Edges = jsonObject.getAsJsonArray("Edges");
-            for(JsonElement node : Nodes){
-                String[] pos = ((JsonObject) node).get("pos").getAsString().split(",");
-                int key = Integer.parseInt(((JsonObject) node).get("id").getAsString());
-                GeoL location = new GeoL(Double.parseDouble(pos[0]),Double.parseDouble(pos[1]),Double.parseDouble(pos[2]));
-                NodeData Node = new Node(location,key);
-                dwg.addNode(Node);
-            }
-            for(JsonElement edge : Edges){
-                JsonObject Edge = (JsonObject) edge;
-                dwg.connect(Edge.get("src").getAsInt(),Edge.get("dest").getAsInt(),Edge.get("w").getAsInt());
-            }
-            this.dwg = dwg;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public void Dijkstra(int src) {
 
-        Node node = this.dwg.getNodes().get(src);
+        Node node = DWGcopy.getNodes().get(src);
         double saveWeight = node.getWeight();
         node.setWeight(0.0);
         PriorityQueue<Node> NodeQueue = new PriorityQueue<>(Comparator.comparing(Node::getWeight));
@@ -212,7 +179,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             Node currNode = NodeQueue.poll();
 
             for (Map.Entry<Integer, Edge> meEdge : currNode.getAllEdgesOut().entrySet()) {
-                Node childNode = (Node) this.dwg.getNode(meEdge.getValue().getDest());
+                Node childNode = (Node) DWGcopy.getNode(meEdge.getValue().getDest());
                 if (childNode.getKey() != src && childNode.getTag() != Integer.MAX_VALUE) {
                     //childNode.getWeight() == 0
                     childNode.setWeight(Double.POSITIVE_INFINITY);

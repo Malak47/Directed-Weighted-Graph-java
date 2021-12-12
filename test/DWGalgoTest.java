@@ -8,9 +8,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGalgoTest {
-
-
-
     GeoL g0 = new GeoL(35.19589389346247,32.10152879327731,0.0);
     GeoL g1 = new GeoL(35.20319591121872,32.10318254621849,0.0);
     GeoL g2 = new GeoL(35.20752617756255,32.1025646605042,0.0);
@@ -47,7 +44,6 @@ class DWGalgoTest {
     Node n14 = new Node(g14, 14);
     Node n15 = new Node(g15, 15);
     Node n16 = new Node(g16, 16);
-
 
 
     Edge e0  = new Edge(n0.getKey(), n16.getKey(),   1.3118716362419698);
@@ -447,46 +443,46 @@ class DWGalgoTest {
         dwgtest.addEdge(e33);
         dwgtest.addEdge(e34);
         dwgtest.addEdge(e35);
-//        DWGalgo dwgalgotest = new DWGalgo(dwgtest);
-//        assertEquals(dwgalgotest.center().getKey(), 8);
+        //DWGalgo dwgalgotest = new DWGalgo("G1.json");
+        assertEquals(dwgalgotest.center().getKey(), 8);
 
 
-        ///////////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////
 //        assertEquals(a.center().getKey(), 8);
 //        assertEquals(b.center().getKey(), 0);
 //        assertEquals(c.center().getKey(), 40);
 //        assertEquals(d.center().getKey(), 0);
-        ///////////////////////////////////////////////////////////////////////
-        DWG dwg = new DWG();
-        dwg.addNode(n0);
-        dwg.addNode(n1);
-        dwg.addNode(n2);
-       // dwg.addNode(n3);
-        dwg.connect(n0.getKey(),n1.getKey(),1);
-        dwg.connect(n1.getKey(),n0.getKey(),1);
-        dwg.connect(n1.getKey(),n2.getKey(),1);
-        dwg.connect(n2.getKey(),n1.getKey(),1);
-       // dwg.connect(n3.getKey(),n2.getKey(),1);
-        //dwg.connect(n0.getKey(),n2.getKey(),1);
+      ///////////////////////////////////////////////////////////////////////
+//      DWG dwg = new DWG();
+//      dwg.addNode(n0);
+//      dwg.addNode(n1);
+//      dwg.addNode(n2);
+//     // dwg.addNode(n3);
+//      dwg.connect(n0.getKey(),n1.getKey(),1);
+//      dwg.connect(n1.getKey(),n0.getKey(),1);
+//      dwg.connect(n1.getKey(),n2.getKey(),1);
+//      dwg.connect(n2.getKey(),n1.getKey(),1);
+   // dwg.connect(n3.getKey(),n2.getKey(),1);
+    //dwg.connect(n0.getKey(),n2.getKey(),1);
 
- /*       dwg.connect(n1.getKey(),n2.getKey(),1);
-        dwg.connect(n2.getKey(),n3.getKey(),1);*/
-        DWGalgo dwgalgo = new DWGalgo(dwg);
-        assertEquals(1,dwgalgo.center().getKey());
+//      dwg.connect(n1.getKey(),n2.getKey(),1);
+//      dwg.connect(n2.getKey(),n3.getKey(),1);
+//      DWGalgo dwgalgo = new DWGalgo(dwg);
+//      assertEquals(1,dwgalgo.center().getKey());
 
-        DWG dwg2 = new DWG();
-        dwg.addNode(n0);
-        dwg.addNode(n1);
-        dwg.addNode(n2);
-        dwg.addNode(n3);
-        dwg.connect(n0.getKey(),n2.getKey(),1);
-        dwg.connect(n2.getKey(),n0.getKey(),1);
-        dwg.connect(n1.getKey(),n2.getKey(),1);
-        dwg.connect(n2.getKey(),n1.getKey(),1);
-        dwg.connect(n2.getKey(),n3.getKey(),1);
-        dwg.connect(n3.getKey(),n2.getKey(),1);
-        DWGalgo dwgalgo2 = new DWGalgo(dwg2);
-        assertEquals(2,dwgalgo2.center().getKey());
+//        DWG dwg2 = new DWG();
+//        dwg2.addNode(n0);
+//        dwg2.addNode(n1);
+//        dwg2.addNode(n2);
+//        dwg2.addNode(n3);
+//        dwg2.connect(n0.getKey(),n2.getKey(),1);
+//        dwg2.connect(n2.getKey(),n0.getKey(),1);
+//        dwg2.connect(n1.getKey(),n2.getKey(),1);
+//        dwg2.connect(n2.getKey(),n1.getKey(),1);
+//        dwg2.connect(n2.getKey(),n3.getKey(),1);
+//        dwg2.connect(n3.getKey(),n2.getKey(),1);
+//        DWGalgo dwgalgo2 = new DWGalgo(dwg2);
+//        assertEquals(2,dwgalgo2.center().getKey());
 
     }
 

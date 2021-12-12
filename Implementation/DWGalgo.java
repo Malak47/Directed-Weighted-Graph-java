@@ -3,7 +3,14 @@ package api.Implementation;
 import api.api.DirectedWeightedGraph;
 import api.api.DirectedWeightedGraphAlgorithms;
 import api.api.NodeData;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
@@ -111,7 +118,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         shortestPath.add((Node) DWGcopy.getNode(src));
 
         Collections.reverse(shortestPath);
-        this.DWGcopy = this.dwg;
+        this.DWGcopy = (DWG) this.copy();
         if (shortestPath.size() == 1) {
             return null;
         }
@@ -164,7 +171,30 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public boolean load(String file) {
-        return false;
+        try {
+            DWG dwg = new DWG();
+            FileReader fileReader = new FileReader(file);
+            JsonReader jsonReader = new JsonReader(fileReader);
+            JsonObject jsonObject = new JsonParser().parse(jsonReader).getAsJsonObject();
+            JsonArray Nodes = jsonObject.getAsJsonArray("Nodes");
+            JsonArray Edges = jsonObject.getAsJsonArray("Edges");
+            for (JsonElement node : Nodes) {
+                String[] pos = ((JsonObject) node).get("pos").getAsString().split(",");
+                int key = Integer.parseInt(((JsonObject) node).get("id").getAsString());
+                GeoL location = new GeoL(Double.parseDouble(pos[0]), Double.parseDouble(pos[1]), Double.parseDouble(pos[2]));
+                NodeData Node = new Node(location, key);
+                dwg.addNode(Node);
+            }
+            for (JsonElement edge : Edges) {
+                JsonObject Edge = (JsonObject) edge;
+                dwg.connect(Edge.get("src").getAsInt(), Edge.get("dest").getAsInt(), Edge.get("w").getAsInt());
+            }
+            this.dwg = dwg;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public void Dijkstra(int src) {

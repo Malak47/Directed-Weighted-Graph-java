@@ -8,6 +8,8 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
@@ -160,6 +162,13 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public boolean save(String file) {
+        try{
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            FileWriter fileWriter = new FileWriter(file);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

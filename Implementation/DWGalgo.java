@@ -2,13 +2,17 @@ package api.Implementation;
 
 import api.api.DirectedWeightedGraph;
 import api.api.DirectedWeightedGraphAlgorithms;
-import api.api.EdgeData;
 import api.api.NodeData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.stream.JsonReader;
 
 import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     private DWG dwg;
+    private DWG DWGcopy = (DWG) this.copy();
 
     public DWGalgo(DWG dwg) {
         this.dwg = dwg;
@@ -44,15 +48,23 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public DirectedWeightedGraph copy() {
+
         DWG dwgCopy = new DWG();
         for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
-            Node node = new Node((GeoL) meNode.getValue().getLocation(), meNode.getKey());
+            GeoL geol = new GeoL(meNode.getValue().getLocation().x(), meNode.getValue().getLocation().y(), meNode.getValue().getLocation().z());
+            Node node = new Node(geol, meNode.getKey());
             dwgCopy.addNode(node);
         }
         for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
-            HashMap<Integer, Edge> hashEdges = meNode.getValue().getAllEdgesOut();
-            for (Map.Entry<Integer, Edge> meEdgesOut : hashEdges.entrySet()) {
-                dwgCopy.connect(dwgCopy.getNode(meNode.getKey()).getKey(), meEdgesOut.getValue().getDest(), meEdgesOut.getValue().getWeight());
+            HashMap<Integer, Edge> hashEdgesOut = meNode.getValue().getAllEdgesOut();
+            for (Map.Entry<Integer, Edge> meEdgesOut : hashEdgesOut.entrySet()) {
+                Edge edge = new Edge(meEdgesOut.getValue().getSrc(), meEdgesOut.getValue().getDest(), meEdgesOut.getValue().getWeight());
+                dwgCopy.addEdge(edge);
+            }
+            HashMap<Integer, Edge> hashEdgesIn = meNode.getValue().getAllEdgesIn();
+            for (Map.Entry<Integer, Edge> meEdgesIn : hashEdgesIn.entrySet()) {
+                Edge edge = new Edge(meEdgesIn.getValue().getSrc(), meEdgesIn.getValue().getDest(), meEdgesIn.getValue().getWeight());
+                dwgCopy.addEdge(edge);
             }
         }
         return dwgCopy;
@@ -124,9 +136,11 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             double maximum = Double.MIN_VALUE;
             for (Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext(); ) {
                 NodeData temp = iterNode2.next();
-                Double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
-                if (shortestpath > maximum) {
-                    maximum = shortestpath;
+                if (temp.getKey() != node.getKey()) {
+                    Double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
+                    if (shortestpath > maximum) {
+                        maximum = shortestpath;
+                    }
                 }
             }
             if (maximum < minimum) {

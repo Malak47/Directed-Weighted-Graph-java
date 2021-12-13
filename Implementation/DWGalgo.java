@@ -26,6 +26,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     public DWGalgo(String jsonFileName) {
         this.load(jsonFileName);
+        this.DWGcopy = (DWG) this.copy();
     }
 
     public static void DFSout(DWG dwg, int nodeKey, boolean[] visited) {

@@ -2,15 +2,17 @@ package api.Implementation;
 
 import api.api.DirectedWeightedGraph;
 import api.api.DirectedWeightedGraphAlgorithms;
+import api.api.EdgeData;
 import api.api.NodeData;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+
+import java.io.*;
 import java.util.*;
 
 public class DWGalgo implements DirectedWeightedGraphAlgorithms {
@@ -22,7 +24,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         this.DWGcopy = (DWG) this.copy();
     }
 
-    public DWGalgo(String jsonFileName){
+    public DWGalgo(String jsonFileName) {
         this.load(jsonFileName);
     }
 
@@ -31,15 +33,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         for (Map.Entry<Integer, Edge> meEdge : ((Node) dwg.getNode(nodeKey)).getAllEdgesOut().entrySet()) {
             if (!visited[meEdge.getKey()]) {
                 DFSout(dwg, meEdge.getKey(), visited);
-            }
-        }
-    }
-
-    public static void DFSin(DWG dwg, int nodeKey, boolean[] visited) {
-        visited[nodeKey] = true;
-        for (Map.Entry<Integer, Edge> meEdge : ((Node) dwg.getNode(nodeKey)).getAllEdgesIn().entrySet()) {
-            if (!visited[meEdge.getKey()]) {
-                DFSin(dwg, meEdge.getKey(), visited);
             }
         }
     }
@@ -120,18 +113,12 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             }
         }
         shortestPath.add((Node) DWGcopy.getNode(src));
-
         Collections.reverse(shortestPath);
         this.DWGcopy = (DWG) this.copy();
         if (shortestPath.size() == 1) {
             return null;
         }
-
         return shortestPath;
-//        for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
-//            shortestPath.add(meNode.getValue());
-//            if(meNode.getKey()==dest)
-//        }
     }
 
     @Override
@@ -153,7 +140,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
                     }
                 }
                 this.DWGcopy = (DWG) this.copy();
-
             }
             if (maximum < minimum) {
                 minimum = maximum;
@@ -170,7 +156,37 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public boolean save(String file) {
-        return false;
+        JsonArrayBuilder Nodes = Json.createArrayBuilder();
+        for (Iterator<NodeData> iterNode = this.dwg.nodeIter(); iterNode.hasNext(); ) {
+            NodeData node = iterNode.next();
+            Nodes.add(Json.createObjectBuilder().add("pos", node.getLocation().toString()).add("id", node.getKey()).build());
+        }
+
+        JsonArrayBuilder Edges = Json.createArrayBuilder();
+        for (Iterator<EdgeData> iterEdge = this.dwg.edgeIter(); iterEdge.hasNext(); ) {
+            EdgeData edge = iterEdge.next();
+            Edges.add(Json.createObjectBuilder().add("src", edge.getSrc()).add("w", edge.getWeight()).add("dest", edge.getDest()).build());
+        }
+
+        javax.json.JsonObject jsonObject = Json.createObjectBuilder().add("Edges", Edges).add("Nodes", Nodes).build();
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            StringWriter stringWriter = new StringWriter();
+            HashMap<String, Boolean> hashMap = new HashMap<>();
+            JsonWriterFactory jsonWriterFactory = Json.createWriterFactory(hashMap);
+            JsonWriter jsonWriter = jsonWriterFactory.createWriter(stringWriter);
+            jsonWriter.writeObject(jsonObject);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement jsonElement = new JsonParser().parse(stringWriter.toString());
+            String Json = gson.toJson(jsonElement);
+            fileWriter.write(Json);
+            jsonWriter.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -204,7 +220,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
     public void Dijkstra(int src) {
 
         Node node = DWGcopy.getNodes().get(src);
-        double saveWeight = node.getWeight();
         node.setWeight(0.0);
         PriorityQueue<Node> NodeQueue = new PriorityQueue<>(Comparator.comparing(Node::getWeight));
         NodeQueue.add(node);
@@ -215,7 +230,6 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             for (Map.Entry<Integer, Edge> meEdge : currNode.getAllEdgesOut().entrySet()) {
                 Node childNode = (Node) DWGcopy.getNode(meEdge.getValue().getDest());
                 if (childNode.getKey() != src && childNode.getTag() != Integer.MAX_VALUE) {
-                    //childNode.getWeight() == 0
                     childNode.setWeight(Double.POSITIVE_INFINITY);
                 }
                 double weight = meEdge.getValue().getWeight();

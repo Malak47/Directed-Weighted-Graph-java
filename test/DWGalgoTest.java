@@ -2,13 +2,23 @@ import api.Implementation.*;
 import api.api.NodeData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGalgoTest {
 
+    //Malak's path:
     DWGalgo G1 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G1.json");
+    DWGalgo G2 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G2.json");
+    DWGalgo G3 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G3.json");
+    //Lara's path:
+//  DWGalgo G1 = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
+//  DWGalgo G2 = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
+//  DWGalgo G3 = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
+
 
     DWG dwg1 = new DWG();
     DWG dwg2 = new DWG();
@@ -267,11 +277,11 @@ class DWGalgoTest {
 
     @Test
     void center() {
-        DWGalgo G1 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G1.json");
+
         assertEquals(G1.center().getKey(), 8);
-        DWGalgo G2 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G2.json");
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         assertEquals(G2.center().getKey(), 0);
-        DWGalgo G3 = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\json files\\G3.json");
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         assertEquals(G3.center().getKey(), 40);
     }
 
@@ -281,15 +291,29 @@ class DWGalgoTest {
 
     @Test
     void save() {
+        //Malak's path:
+        G1.save("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\SaveHere\\G1save.json");
+        //Lara's path:
+//      G1.save("/Users/laraabu/IdeaProjects/Ex2_java/SaveHere/G1save.json");
+
+
+        DWGalgo G1save = new DWGalgo("C:\\Users\\malak\\eclipse-workspace\\Ex2_java\\SaveHere\\G1save.json");
+
+        for (int i = 0; i < G1save.getGraph().nodeSize(); i++) {
+            assertEquals((G1save.getGraph()).getNode(i).getWeight(), 0.0);
+            assertEquals((G1save.getGraph()).getNode(i).getLocation().x(), list.get(i).x());
+            assertEquals((G1save.getGraph()).getNode(i).getLocation().y(), list.get(i).y());
+            assertEquals((G1save.getGraph()).getNode(i).getLocation().z(), list.get(i).z());
+        }
     }
 
     @Test
     void load() {
         for (int i = 0; i < 17; i++) {
-            assertEquals(( G1.getGraph()).getNode(i).getWeight(), 0.0);
-            assertEquals(( G1.getGraph()).getNode(i).getLocation().x(), list.get(i).x());
-            assertEquals(( G1.getGraph()).getNode(i).getLocation().y(), list.get(i).y());
-            assertEquals(( G1.getGraph()).getNode(i).getLocation().z(), list.get(i).z());
+            assertEquals((G1.getGraph()).getNode(i).getWeight(), 0.0);
+            assertEquals((G1.getGraph()).getNode(i).getLocation().x(), list.get(i).x());
+            assertEquals((G1.getGraph()).getNode(i).getLocation().y(), list.get(i).y());
+            assertEquals((G1.getGraph()).getNode(i).getLocation().z(), list.get(i).z());
         }
     }
 }

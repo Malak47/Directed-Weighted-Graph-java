@@ -2,7 +2,6 @@ package api.Implementation;
 
 import api.api.DirectedWeightedGraph;
 import api.api.DirectedWeightedGraphAlgorithms;
-import api.api.EdgeData;
 import api.api.NodeData;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -11,7 +10,6 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
-
 import java.io.*;
 import java.util.*;
 
@@ -164,9 +162,11 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
         }
 
         JsonArrayBuilder Edges = Json.createArrayBuilder();
-        for (Iterator<EdgeData> iterEdge = this.dwg.edgeIter(); iterEdge.hasNext(); ) {
-            EdgeData edge = iterEdge.next();
-            Edges.add(Json.createObjectBuilder().add("src", edge.getSrc()).add("w", edge.getWeight()).add("dest", edge.getDest()).build());
+        for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
+            HashMap<Integer, Edge> hashEdgesOut = meNode.getValue().getAllEdgesOut();
+            for (Map.Entry<Integer, Edge> meEdgesOut : hashEdgesOut.entrySet()) {
+                Edges.add(Json.createObjectBuilder().add("src", meEdgesOut.getValue().getSrc()).add("w", meEdgesOut.getValue().getWeight()).add("dest", meEdgesOut.getValue().getDest()).build());
+            }
         }
 
         javax.json.JsonObject jsonObject = Json.createObjectBuilder().add("Edges", Edges).add("Nodes", Nodes).build();

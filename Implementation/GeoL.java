@@ -34,4 +34,8 @@ public class GeoL implements GeoLocation {
         double d3 = Math.pow(this._z - g.z(), 2);
         return Math.sqrt(d1 + d2 + d3);
     }
+
+    public String toString(){
+        return this._x + "," + this._y + "," + this._z;
+    }
 }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>api.Implementation</OriginalElement>
+  <nodes>
+    <node x="59.53894927536234" y="409.0">api.Implementation.Node</node>
+    <node x="343.53894927536237" y="0.0">api.Implementation.Edge</node>
+    <node x="0.0" y="91.0">api.Implementation.GeoL</node>
+    <node x="137.41394927536234" y="1511.0">api.Implementation.DWGalgo</node>
+    <node x="118.12862318840578" y="1004.0">api.Implementation.DWG</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="api.Implementation.Node" target="api.Implementation.GeoL" relationship="TO_ONE">
+      <point x="2.8421709430404007E-14" y="-265.5" />
+      <point x="202.53894927536237" y="388.0" />
+      <point x="160.7735507246377" y="388.0" />
+      <point x="160.7735507246377" y="368.0" />
+      <point x="197.5" y="368.0" />
+      <point x="79.0" y="82.5" />
+    </edge>
+    <edge source="api.Implementation.Node" target="api.Implementation.Edge" relationship="CREATE">
+      <point x="95.33333333333334" y="-265.5" />
+      <point x="297.8722826086957" y="388.0" />
+      <point x="440.2119565217391" y="388.0" />
+      <point x="440.2119565217391" y="378.0" />
+      <point x="480.78894927536237" y="378.0" />
+      <point x="45.75" y="173.5" />
+    </edge>
+    <edge source="api.Implementation.DWGalgo" target="api.Implementation.DWG" relationship="CREATE">
+      <point x="71.5" y="-171.5" />
+      <point x="351.91394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1480.0" />
+      <point x="307.87862318840575" y="1480.0" />
+      <point x="63.24999999999997" y="227.5" />
+    </edge>
+    <edge source="api.Implementation.DWG" target="api.Implementation.Node" relationship="CREATE">
+      <point x="84.33333333333334" y="-227.5" />
+      <point x="328.9619565217391" y="982.0" />
+      <point x="440.2119565217391" y="982.0" />
+      <point x="440.2119565217391" y="972.0" />
+      <point x="429.7119565217391" y="972.0" />
+      <point x="429.7119565217391" y="962.0" />
+      <point x="274.03894927536237" y="962.0" />
+      <point x="71.50000000000003" y="265.5" />
+    </edge>
+    <edge source="api.Implementation.DWGalgo" target="api.Implementation.GeoL" relationship="CREATE">
+      <point x="71.5" y="-171.5" />
+      <point x="351.91394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1480.0" />
+      <point x="16.03894927536234" y="1480.0" />
+      <point x="16.03894927536234" y="378.0" />
+      <point x="39.5" y="378.0" />
+      <point x="-79.0" y="82.5" />
+    </edge>
+    <edge source="api.Implementation.DWG" target="api.Implementation.Edge" relationship="TO_MANY">
+      <point x="0.0" y="-227.5" />
+      <point x="244.62862318840578" y="982.0" />
+      <point x="243.46195652173913" y="982.0" />
+      <point x="243.46195652173913" y="972.0" />
+      <point x="356.03894927536237" y="972.0" />
+      <point x="356.03894927536237" y="368.0" />
+      <point x="389.28894927536237" y="368.0" />
+      <point x="-45.75" y="173.5" />
+    </edge>
+    <edge source="api.Implementation.DWGalgo" target="api.Implementation.DWG" relationship="TO_ONE">
+      <point x="-71.5" y="-171.5" />
+      <point x="208.91394927536234" y="1490.0" />
+      <point x="181.37862318840578" y="1490.0" />
+      <point x="-63.25" y="227.5" />
+    </edge>
+    <edge source="api.Implementation.DWG" target="api.Implementation.Node" relationship="TO_MANY">
+      <point x="0.0" y="-227.5" />
+      <point x="244.62862318840578" y="982.0" />
+      <point x="243.46195652173913" y="982.0" />
+      <point x="243.46195652173913" y="972.0" />
+      <point x="131.03894927536234" y="972.0" />
+      <point x="-71.5" y="265.5" />
+    </edge>
+    <edge source="api.Implementation.DWG" target="api.Implementation.GeoL" relationship="DEPENDENCY">
+      <point x="-84.33333333333331" y="-227.5" />
+      <point x="160.29528985507247" y="982.0" />
+      <point x="27.03894927536234" y="982.0" />
+      <point x="27.03894927536234" y="388.0" />
+      <point x="120.71195652173915" y="388.0" />
+      <point x="120.71195652173915" y="378.0" />
+      <point x="118.5" y="378.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="api.Implementation.Node" target="api.Implementation.GeoL" relationship="DEPENDENCY">
+      <point x="-95.33333333333329" y="-265.5" />
+      <point x="107.20561594202906" y="388.0" />
+      <point x="120.71195652173915" y="388.0" />
+      <point x="120.71195652173915" y="378.0" />
+      <point x="118.5" y="378.0" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="api.Implementation.DWGalgo" target="api.Implementation.Edge" relationship="CREATE">
+      <point x="71.5" y="-171.5" />
+      <point x="351.91394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1480.0" />
+      <point x="450.7119565217391" y="1480.0" />
+      <point x="450.7119565217391" y="388.0" />
+      <point x="440.2119565217391" y="388.0" />
+      <point x="440.2119565217391" y="378.0" />
+      <point x="480.78894927536237" y="378.0" />
+      <point x="45.75" y="173.5" />
+    </edge>
+    <edge source="api.Implementation.Node" target="api.Implementation.Edge" relationship="TO_MANY">
+      <point x="2.8421709430404007E-14" y="-265.5" />
+      <point x="202.53894927536237" y="388.0" />
+      <point x="160.7735507246377" y="388.0" />
+      <point x="160.7735507246377" y="378.0" />
+      <point x="356.03894927536237" y="378.0" />
+      <point x="356.03894927536237" y="368.0" />
+      <point x="389.28894927536237" y="368.0" />
+      <point x="-45.75" y="173.5" />
+    </edge>
+    <edge source="api.Implementation.DWGalgo" target="api.Implementation.Node" relationship="CREATE">
+      <point x="71.5" y="-171.5" />
+      <point x="351.91394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1490.0" />
+      <point x="285.41394927536237" y="1480.0" />
+      <point x="429.7119565217391" y="1480.0" />
+      <point x="429.7119565217391" y="962.0" />
+      <point x="274.03894927536237" y="962.0" />
+      <point x="71.50000000000003" y="265.5" />
+    </edge>
+    <edge source="api.Implementation.DWG" target="api.Implementation.Edge" relationship="CREATE">
+      <point x="84.33333333333334" y="-227.5" />
+      <point x="328.9619565217391" y="982.0" />
+      <point x="440.2119565217391" y="982.0" />
+      <point x="440.2119565217391" y="378.0" />
+      <point x="480.78894927536237" y="378.0" />
+      <point x="45.75" y="173.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.35752401280683027" showDependencies="true" x="263.5" y="927.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

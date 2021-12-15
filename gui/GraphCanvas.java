@@ -26,6 +26,7 @@ public class GraphCanvas extends JComponent {
     public void paintComponent(Graphics g){
         // paint edges
         for (Map.Entry<String, Edge> meEdge : dwg.getEdges().entrySet()) {
+            g.setColor(new Color(8,83,109));
             meEdge.getValue().setColor(new Color(8,83,109));
             Point2D.Double src = new Point2D.Double(this.dwg.getNode(meEdge.getValue().getSrc()).getLocation().x(), this.dwg.getNode(meEdge.getValue().getSrc()).getLocation().y());
             Point2D.Double dest = new Point2D.Double(this.dwg.getNode(meEdge.getValue().getDest()).getLocation().x(), this.dwg.getNode(meEdge.getValue().getDest()).getLocation().y());
@@ -36,6 +37,7 @@ public class GraphCanvas extends JComponent {
         for (Map.Entry<Integer, Node> meNode : this.dwg.getNodes().entrySet()) {
             Point2D.Double currNode = new Point2D.Double(meNode.getValue().getLocation().x(),meNode.getValue().getLocation().y()) ;
             meNode.getValue().setColor(new Color(8,83,109));
+            g.setColor(new Color(8,83,109));
             g.fillOval((int) currNode.getX()-40, (int) currNode.getY()-40, 80, 80);
             //paint text
             g.setColor(Color.white);
@@ -124,11 +126,11 @@ public class GraphCanvas extends JComponent {
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension(1500,9000);
+        return new Dimension(500,500);
     }
 
 
     public Dimension getPreferredSize() {
-        return new Dimension(1500,900);
+        return new Dimension(500,500);
     }
 }

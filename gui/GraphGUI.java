@@ -3,6 +3,7 @@ package api.gui;
 import api.Implementation.DWGalgo;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -28,20 +29,20 @@ public class GraphGUI {
     private DWGalgo dwGalgo;
 
     public GraphGUI(DWGalgo gr) {
-        createAndShowGUI(gr);
+        createAndShowGUI();
     }
     public static void main(String[] args) {
         DWGalgo rn = new DWGalgo("/Users/laraabu/IdeaProjects/Ex2_java/json files/G1.json");
         final GraphGUI GUI = new GraphGUI(rn);
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                GUI.createAndShowGUI(rn);
+                GUI.createAndShowGUI();
             }
         });
 
     }
 
-    public void createAndShowGUI(DWGalgo dwGalgo) {
+    public void createAndShowGUI() {
         // Make sure we have nice window decorations.
         JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -50,7 +51,7 @@ public class GraphGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Add components
-        createComponents(frame,dwGalgo);
+        createComponents(frame);
 
         // Display the window.
         frame.pack();
@@ -65,21 +66,22 @@ public class GraphGUI {
         public void mouseClicked(MouseEvent e) {
             switch (mode) {
                 case loadButton:
-
+                    loadButton.addActionListener((ActionListener) e);
+                    runGUI((DWGalgo) e.getSource());
             }
 
         }
     }
-    public void createComponents(JFrame frame, DWGalgo dwGalgo) {
+    public void createComponents(JFrame frame) {
         // graph display
         Container pane = frame.getContentPane();
         pane.setLayout(new FlowLayout());
         JPanel panel1 = new JPanel();
         panel1.setLayout(new BorderLayout());
-        canvas = new GraphCanvas(dwGalgo);
-        //GraphMouseListener gml = new GraphMouseListener();
-        //canvas.addMouseListener(gml);
-        //canvas.addMouseMotionListener(gml);
+        canvas = new GraphCanvas();
+        GraphMouseListener gml = new GraphMouseListener();
+        canvas.addMouseListener(gml);
+        canvas.addMouseMotionListener(gml);
         panel1.add(canvas);
         instr = new JLabel("Click to add new nodes; drag to move.");
         panel1.add(instr, BorderLayout.NORTH);
@@ -91,7 +93,7 @@ public class GraphGUI {
 
         loadButton = new JButton("load file");
         panel2.add(loadButton);
-        loadButton.addActionListener(new LoadJson());
+        loadButton.addActionListener(new LoadJsonListener());
 
         addNodeButton = new JButton("Add/Move Nodes");
         panel2.add(addNodeButton);
@@ -150,7 +152,7 @@ public class GraphGUI {
     }*/
 
     enum InputMode {
-        ADD_NODES, RMV_NODES, ADD_EDGES, RMV_EDGES, CHG_TEXT, CHG_DIST, BFS, DFS, S_PATH, TPS, loadButton
+        ADD_NODES, RMV_NODES, ADD_EDGES, RMV_EDGES, CHG_TEXT, CHG_DIST, BFS, DFS, S_PATH, TSP, loadButton
     }
 
     private class AddNodeListener implements ActionListener {
@@ -160,10 +162,24 @@ public class GraphGUI {
         }
     }
 
-    private class LoadJson implements ActionListener {
+    private class LoadJsonListener implements ActionListener{
+        @Override
         public void actionPerformed(ActionEvent e) {
             mode = InputMode.loadButton;
-            instr.setText("Write path");
+            instr.setText("Choose a json file to load");
+            JFileChooser j = new JFileChooser("data/");
+            j.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Json files", "json");
+            j.addChoosableFileFilter(filter);
+            int r = j.showOpenDialog(null);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                String file_path = j.getSelectedFile().getAbsolutePath();
+                DWGalgo dwGalgo = new DWGalgo(file_path);
+                JFrame jf = new JFrame();
+                canvas = new GraphCanvas(dwGalgo);
+                jf.setVisible(true);
+            //canvas.paintComponent(canvas.getGraphics());
+            }
         }
     }
 
@@ -233,7 +249,9 @@ public class GraphGUI {
     private class TSPListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            mode = InputMode.TPS;
+            mode = InputMode.loadButton;
+
+            //mode = InputMode.TSP;
             String text = "";
             DWGalgo dwgalgo = new DWGalgo(canvas.dwg);
            /* for (NodeData s : dwgalgo.tsp()) {
@@ -257,6 +275,8 @@ public class GraphGUI {
             DFSButton.setEnabled(true);
             spButton.setEnabled(true);
             TSPButton.setEnabled(true);
+            loadButton.setEnabled(true);
+            performed(e);
             instr.setText("Try functions by clicking buttons.");
         }
     }

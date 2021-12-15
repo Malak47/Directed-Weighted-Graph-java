@@ -15,6 +15,9 @@ In this project we implemented a directed weighted graph. Reading from json file
 3) __Node :__ This class implements NodeData Interface, it contains the key,location,tag,weight,info,previous node,hashmap of edges out and hashmap of edges in of the node.
 4) __DWG :__ This class implements DirectedWeightedGraph Interface, it contains two hasmaps, one for the nodes and the other is for the edges, it also contains an counter named MC (short for Mode Count) that counts the changes made in graph.
 5) __DWGalgo :__ This class implements DirectedWeightedGraphAlgorithms Interface, it contains a DWG(directed weighted graph) that we implemented, and a copy of this graph. <br> In this class we implemented some algotiyhms for searching shortest path,tsp, etc.
+---
+### UML:
+![UML](https://github.com/Malak47/Ex2_OOP/blob/8d30e4d7587dd636834ff76398deea11e0d4e00a/UML.png)
 
 ### Algorithms:
 - [Dijkstra Algorithm ](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm): Dijkstra's original algorithm found the shortest path between two given nodes.

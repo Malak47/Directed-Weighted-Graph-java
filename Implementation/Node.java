@@ -3,6 +3,7 @@ package api.Implementation;
 import api.api.GeoLocation;
 import api.api.NodeData;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class Node implements NodeData {
@@ -14,6 +15,7 @@ public class Node implements NodeData {
     private HashMap<Integer, Edge> edgesIn;
     private HashMap<Integer, Edge> edgesOut;
     private Node previous;
+    private Color color;
 
 
     public Node(GeoL location, int key) {
@@ -25,6 +27,7 @@ public class Node implements NodeData {
         this.edgesIn = new HashMap<Integer, Edge>();
         this.edgesOut = new HashMap<Integer, Edge>();
         this.previous = null;
+        this.color = new Color(8,83,109);
     }
 
     @Override
@@ -111,4 +114,11 @@ public class Node implements NodeData {
         this.previous = previous;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

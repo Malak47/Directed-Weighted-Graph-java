@@ -2,6 +2,8 @@ package api.Implementation;
 
 import api.api.EdgeData;
 
+import java.awt.*;
+
 
 public class Edge implements EdgeData {
     private int src;
@@ -9,7 +11,7 @@ public class Edge implements EdgeData {
     private double weight;
     private String info;
     private int tag;
-
+    private Color color;
 
     public Edge(int src, int dest, double weight) {
         this.src = src;
@@ -17,6 +19,7 @@ public class Edge implements EdgeData {
         this.weight = weight;
         this.info = "Unknown";
         this.tag = 0;
+        this.color = new Color(8,83,109);
     }
 
     @Override
@@ -57,5 +60,13 @@ public class Edge implements EdgeData {
     @Override
     public String toString() {
         return "src: " + this.src + "\nw: " + this.weight + "\ndest: " + this.dest;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

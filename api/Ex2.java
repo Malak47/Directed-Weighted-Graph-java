@@ -3,8 +3,6 @@ package api.api;
 import api.Implementation.DWGalgo;
 import api.gui.GraphGUI;
 
-import api.Implementation.DWGalgo;
-
 /**
  * This class is the main class for api.api.Ex2 - your implementation will be tested using this class.
  */
@@ -39,5 +37,13 @@ public class Ex2 {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
         GraphGUI.runGUI((DWGalgo) alg);
 
+    }
+
+    public static void main(String[] args){
+        try{
+            runGUI(args[0]);
+        }catch (Exception e){
+            System.out.println("Please enter a json path file: ");
+        }
     }
 }

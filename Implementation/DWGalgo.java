@@ -99,10 +99,10 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        List<NodeData> shortestPath = new ArrayList<NodeData>();
+        List<NodeData> shortestPath = new ArrayList<>();
         Dijkstra(src);
         int counter = 0;
-        for (Node node = (Node) DWGcopy.getNode(dest); node != ((Node) DWGcopy.getNode(src)); node = node.getPrevious()) {
+        for (Node node = (Node) DWGcopy.getNode(dest); node != (DWGcopy.getNode(src)); node = node.getPrevious()) {
             if (!shortestPath.contains(node)) {
                 shortestPath.add(node);
             }
@@ -111,7 +111,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
                 break;
             }
         }
-        shortestPath.add((Node) DWGcopy.getNode(src));
+        shortestPath.add(DWGcopy.getNode(src));
         Collections.reverse(shortestPath);
         this.DWGcopy = (DWG) this.copy();
         if (shortestPath.size() == 1) {
@@ -133,7 +133,7 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
             for (Iterator<NodeData> iterNode2 = this.dwg.nodeIter(); iterNode2.hasNext(); ) {
                 NodeData temp = iterNode2.next();
                 if (temp.getKey() != node.getKey()) {
-                    Double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
+                    double shortestpath = shortestPathDist(node.getKey(), temp.getKey());
                     if (shortestpath > maximum) {
                         maximum = shortestpath;
                     }
@@ -150,7 +150,34 @@ public class DWGalgo implements DirectedWeightedGraphAlgorithms {
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
-        return null;
+        if (cities == null || cities.size() == 0) {
+            return null;
+        }
+        if (cities.size() == 1) {
+            return cities;
+        }
+        int firstNodeKey = cities.get(0).getKey();
+        int secNodeKey = cities.get(1).getKey();
+
+        List<NodeData> citiesCppy = new ArrayList<>(cities);
+        List<NodeData> l1 = shortestPath(firstNodeKey, secNodeKey);
+        List<NodeData> tsp = new ArrayList<>(l1);
+        cities.remove(0);
+        cities.remove(1);
+
+        this.DWGcopy = (DWG) this.copy();
+        while (!citiesCppy.isEmpty()) {
+            if (tsp.contains(citiesCppy.get(0))) {
+                continue;
+            }
+            int lastNodeKey = tsp.remove(tsp.size() - 1).getKey();
+            int firstCopyNodeKey = citiesCppy.get(0).getKey();
+            l1 = shortestPath(lastNodeKey, firstCopyNodeKey);
+            tsp.addAll(l1);
+            citiesCppy.remove(0);
+            this.DWGcopy = (DWG) this.copy();
+        }
+        return tsp;
     }
 
     @Override

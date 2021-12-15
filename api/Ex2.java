@@ -3,6 +3,8 @@ package api.api;
 import api.Implementation.DWGalgo;
 import api.gui.GraphGUI;
 
+import api.Implementation.DWGalgo;
+
 /**
  * This class is the main class for api.api.Ex2 - your implementation will be tested using this class.
  */
@@ -14,9 +16,8 @@ public class Ex2 {
      */
     public static DirectedWeightedGraph getGrapg(String json_file) {
         DirectedWeightedGraph ans = null;
-        // ****** Add your code here ******
-        //
-        // ********************************
+        DWGalgo dwg = new DWGalgo(json_file);
+        ans = dwg.getGraph();
         return ans;
     }
     /**
@@ -26,9 +27,7 @@ public class Ex2 {
      */
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         DirectedWeightedGraphAlgorithms ans = null;
-        // ****** Add your code here ******
-        //
-        // ********************************
+        ans = new DWGalgo(json_file);
         return ans;
     }
     /**
